@@ -1,3 +1,4 @@
+import * as React from "react";
 import "./projectList.css";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
@@ -5,17 +6,24 @@ import { projectRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Box,
+  Container,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Stack,
+} from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { styled } from "@mui/material/styles";
+import Title from "../../components/Title";
 
 export default function ProjectList() {
   const [isSending, setIsSending] = useState(false);
   const [data, setData] = useState(projectRows);
-  // const [data1, setData1] = useState({
-  //   api_reference_code: "",
-  //   project_name: "",
-  //   location: "",
-  //   starting_date: "",
-  //   completion_date: "",
-  // });
+
   const [data1, setData1] = useState({
     projects: [],
     loading: true,
@@ -34,23 +42,11 @@ export default function ProjectList() {
       const res = await axios.get("http://localhost:8000/api/projects");
 
       if (res.data.status === 200) {
-        // setData1({
-        //   api_reference_code: res.data.api_reference_code,
-        //   project_name: res.data.project_name,
-        //   location: res.data.location,
-        //   starting_date: res.data.starting_date,
-        //   completion_date: res.data.completion_date,
-        // });
         setData1({
           projects: res.data.projects,
           loading: false,
         });
-        // console.log(res.data.projects);
-        // console.log(
-        //   res.data.projects.map((item) => {
-        //     return;
-        //   })
-        // );
+
         console.log(res.data.projects);
       }
     };
@@ -118,18 +114,35 @@ export default function ProjectList() {
     },
   ];
 
+  const Item = styled(Box)(({ theme }) => ({
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
   return (
-    <div className="projectList">
-      <div className="dataTableTitle">
-        Projects List
-        <Link
-          to="/newProject"
-          style={{ textDecoration: "none" }}
-          className="link1"
-        >
-          Add New Project
-        </Link>
-      </div>
+    <React.Fragment>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={0}
+      >
+        <Title>Projects List</Title>
+
+        <Item>
+          <ListItemButton
+            component={RouterLink}
+            to="/newProject"
+            justifyContent="flex-end"
+          >
+            <AddCircleIcon />
+
+            <ListItemText primary="New Project" />
+          </ListItemButton>
+        </Item>
+      </Stack>
+
       <DataGrid
         {...data1}
         rows={data1.projects}
@@ -138,6 +151,6 @@ export default function ProjectList() {
         pageSize={10}
         components={{ Toolbar: GridToolbar }}
       />
-    </div>
+    </React.Fragment>
   );
 }
