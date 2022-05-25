@@ -9,26 +9,42 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  Home,
+  Timeline,
+  TrendingUp,
+  PersonOutline,
+  Psychology,
+  AttachMoney,
+  BarChart,
+  MailOutline,
+  DynamicFeed,
+  ChatBubbleOutline,
+  WorkOutline,
+  Report,
+} from "@mui/icons-material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton component={RouterLink} to="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Home" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={RouterLink} to="users">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Users" />
+    </ListItemButton>
+    <ListItemButton component={RouterLink} to="projects">
+      <ListItemIcon>
+        <Psychology />
+      </ListItemIcon>
+      <ListItemText primary="Projects" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -36,27 +52,21 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Reports" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
   </React.Fragment>
 );
 
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
+      {/* Saved reports */}
     </ListSubheader>
-    <ListItemButton>
+    <ListItemButton component={RouterLink} to="/user-signin">
       <ListItemIcon>
-        <AssignmentIcon />
+        <LogoutIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Logout" />
     </ListItemButton>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
@@ -67,6 +77,6 @@ export const secondaryListItems = (
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
-    </ListItemButton>
+    </ListItemButton> */}
   </React.Fragment>
 );

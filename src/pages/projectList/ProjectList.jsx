@@ -14,6 +14,7 @@ import {
   ListItemText,
   Paper,
   Stack,
+  Typography,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -122,7 +123,7 @@ export default function ProjectList() {
 
   return (
     <React.Fragment>
-      <Stack
+      {/* <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
@@ -150,7 +151,8 @@ export default function ProjectList() {
         columns={columns}
         pageSize={10}
         components={{ Toolbar: GridToolbar }}
-      />
+      /> */}
+      <Typography>Hello</Typography>
     </React.Fragment>
   );
 }

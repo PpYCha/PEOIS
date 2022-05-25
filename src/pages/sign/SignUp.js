@@ -148,7 +148,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
@@ -171,7 +171,7 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   // helperText={msg.message ? "" : "Name is required"}
                   // error={true}
@@ -185,7 +185,7 @@ export default function SignUp() {
                   value={user.name}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -197,7 +197,7 @@ export default function SignUp() {
                   value={user.email}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -209,7 +209,7 @@ export default function SignUp() {
                   value={user.username}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
