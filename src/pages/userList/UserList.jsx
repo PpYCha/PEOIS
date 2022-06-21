@@ -2,14 +2,11 @@ import "./userList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@mui/icons-material";
 import { userRows } from "../../dummyData";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath } from "react-router-dom";
 import { useState } from "react";
 
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { Box } from "@mui/material";
 
 export default function UserList() {
   const [data, setData] = useState(userRows);
@@ -61,13 +58,12 @@ export default function UserList() {
   ];
 
   return (
-    <div className="userList">
-      <div className="userListTitle">
-        User List
-        <Link to="/newUser" className="link1">
-          New User
-        </Link>
-      </div>
+    <Box>
+      <Box>
+        <Typography> User List</Typography>
+
+        {/* <Link to="/newUser">New User</Link> */}
+      </Box>
 
       <DataGrid
         rows={data}
@@ -76,6 +72,6 @@ export default function UserList() {
         pageSize={10}
         checkboxSelection
       />
-    </div>
+    </Box>
   );
 }

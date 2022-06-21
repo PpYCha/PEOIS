@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -42,6 +42,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [office, setOffice] = useState("");
   const [gender, setGender] = useState("");
   const [msg, setMsg] = useState({
@@ -107,6 +108,10 @@ export default function SignUp() {
             text: "Save successfully",
             icon: "success",
             confirmButtonText: "OK!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/user-signin");
+            }
           });
           console.log(msg);
         }

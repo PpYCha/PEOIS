@@ -146,14 +146,13 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
+          <List>
             {mainListItems}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
         </Drawer>
         <Box
-          component="main"
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === "light"
@@ -168,9 +167,9 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <UserList />
-                </Paper>
+                <Paper
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                ></Paper>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
