@@ -1,0 +1,16 @@
+import axios from "axios";
+
+const url = "http://localhost:8000/api/infrastructures";
+
+export const fetchInfrastructures = async () => {
+  try {
+    const res = await axios.get(url);
+
+    if (res.data.status === 200) {
+      console.log(res.data.infrastructures);
+      return res.data.infrastructures;
+    }
+  } catch (error) {
+    console.log("infrastructure error:", error);
+  }
+};

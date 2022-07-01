@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import {
   Button,
@@ -15,34 +16,34 @@ const StyledToolbar = styled(DataGrid)({
   height: 52,
 });
 
-const DataGridComponent = ({ rows, columns }) => {
+const DataGridComponent = ({ rows, columns, loading }) => {
+  const [pageSize, setPageSize] = useState(10);
+
   return (
-    <>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        // getEstimatedRowHeight={() => 100}
-        // getRowHeight={() => "auto"}
-        sx={{
-          "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
-            py: "8px",
-          },
-          "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-            py: "15px",
-          },
-          "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
-            py: "22px",
-          },
-        }}
-        components={{ Toolbar: GridToolbar }}
-        disableSelectionOnClick
-        // hideFooterPagination
-        pageSize={50}
-        rowsPerPageOptions={[50]}
-        autoHeight
-        rowHeight={38}
-      />
-    </>
+    <DataGrid
+      loading={loading}
+      rows={rows}
+      columns={columns}
+      sx={{
+        "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
+          py: "8px",
+        },
+        "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
+          py: "15px",
+        },
+        "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
+          py: "22px",
+        },
+        height: "500px",
+        // width: "500px",
+      }}
+      components={{ Toolbar: GridToolbar, LoadingOverlay: LinearProgress }}
+      disableSelectionOnClick
+      pageSize={pageSize}
+      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+      rowsPerPageOptions={[5, 10, 20]}
+      pagination
+    />
   );
 };
 

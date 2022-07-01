@@ -7,7 +7,6 @@ export const fetchProjects = async () => {
     const res = await axios.get(`${url}/projects`);
 
     if (res.data.status === 200) {
-      console.log(res.data.projects);
       return res.data.projects;
     }
   } catch (error) {

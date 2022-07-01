@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -45,8 +45,14 @@ export default function SignIn() {
     success: "",
     validation_error: "",
   });
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  const [msg, setMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [validation_error, setValidation_error] = useState("");
 
   const { dispatch } = useContext(AuthContext);
 
@@ -61,14 +67,11 @@ export default function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
 
     onSignInHandler();
   };
+
+  useEffect(() => {}, []);
 
   const onSignInHandler = () => {
     axios
@@ -101,26 +104,24 @@ export default function SignIn() {
           });
 
           console.log(user);
-        } else if (
-          response.data.status === "failed" &&
-          response.data.success === false
-        ) {
-          setUser({
+        }
+        // if (
+        //   response.data.status === "failed" &&
+        //   response.data.success === false
+        // ) {
+        //   setUser({
+        //     validation_error: response.data.validation_error,
+        //   });
+        //   console.log(user);
+        // }
+
+        //No Emaill || No Password
+        if (response.data.status === "failed") {
+          setValidation_error({
             validation_error: response.data.validation_error,
           });
-          console.log(user);
+          console.log(validation_error);
         }
-        //else if (
-        //     response.data.status === "failed" &&
-        //     response.data.success === false
-        //   ) {
-        //     setUser({
-        //       errMsg: response.data.message,
-        //     });
-        //     setTimeout(() => {
-        //       setUser({ errMsg: "" });
-        //     }, 2000);
-        //   }
       })
       .catch((error) => {
         console.log(error);
@@ -160,10 +161,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              // onChange={handleInput}
               onChange={(e) => setEmail(e.target.value)}
-              // error={user.email === ""}
-              // helperText={user.email === "" ? "Empty field!" : " "}
             />
             <TextField
               margin="normal"
@@ -174,7 +172,6 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              // onChange={handleInput}
               onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel

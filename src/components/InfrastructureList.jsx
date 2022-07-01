@@ -9,13 +9,30 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import DataGridComponent from "./DataGridComponent";
+
+import { fetchInfrastructures } from "../api/infrastructures";
 
 const InfrastructureList = () => {
   const [infastructureList, setInfastructureList] = useState([{}]);
 
   const [loading, setLoading] = useState(true);
 
-  const columns = [{ field: "id", headerName: "ID", flex: 1, hide: true }];
+  const columns = [
+    { field: "id", headerName: "ID", flex: 1 },
+    { field: "name_of_project", headerName: "Project Name", flex: 1 },
+  ];
+
+  useEffect(() => {
+    fetchAPI();
+  }, []);
+
+  const fetchAPI = async () => {
+    setLoading(true);
+    setInfastructureList(await fetchInfrastructures());
+    setLoading(false);
+  };
+
   return (
     <Box display="flex" flexDirection="column">
       <Paper elevation={3}>
@@ -26,33 +43,12 @@ const InfrastructureList = () => {
           </Link>
         </Stack>
         <Box m={2}>
-          {loading && <CircularProgress color="secondary" />}
-
-          {!loading && (
-            <DataGrid
-              rows={infastructureList}
-              columns={columns}
-              // getEstimatedRowHeight={() => 100}
-              // getRowHeight={() => "auto"}
-              sx={{
-                "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
-                  py: "8px",
-                },
-                "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-                  py: "15px",
-                },
-                "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
-                  py: "22px",
-                },
-              }}
-              components={{ Toolbar: GridToolbar }}
-              disableSelectionOnClick
-              // hideFooterPagination
-              pageSize={50}
-              rowsPerPageOptions={[50]}
-              autoHeight
-              rowHeight={38}
-            />
+          {loading ? (
+            <CircularProgress color="secondary" />
+          ) : (
+            <>
+              <DataGridComponent rows={infastructureList} columns={columns} />
+            </>
           )}
         </Box>
       </Paper>

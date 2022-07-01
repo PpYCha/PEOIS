@@ -17,9 +17,14 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import InputLabel from "@mui/material/InputLabel";
 import Swal from "sweetalert2";
-import { Alert } from "@mui/material";
+
+import FormInput from "../../components/FormInput";
+import { postSignUp } from "../../api/sign";
+import FormControlSelect from "../../components/FormControlSelect";
 
 function Copyright(props) {
   return (
@@ -31,7 +36,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="">
-        PEOIS
+        REFACTOR
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -51,7 +56,7 @@ export default function SignUp() {
     error: "",
     success: "",
   });
-  const [user, setUser] = useState({
+  const [values, setValues] = useState({
     name: "",
     email: "",
     username: "",
@@ -63,40 +68,18 @@ export default function SignUp() {
     is_active: "false",
   });
 
-  const handleInput = (e) => {
-    setUser({
-      ...user,
-      [e.target.id]: e.target.value,
-    });
-  };
-
   const handleChangeOffice = (e) => {
     setOffice(e.target.value);
-    // handleNewUser();
   };
 
   const handleChangeGender = (event) => {
     setGender(event.target.value);
   };
 
-  // useEffect(() => {
-  //   postData();
-  // }, []);
-
   async function postData() {
-    const res = axios
-      .post("http://localhost:8000/api/user-signup", {
-        name: user.name,
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        address: user.address,
-        phone: user.phone,
-        gender: gender,
-        office: office,
-        is_active: user.is_active,
-      })
+    const res = postSignUp({ gender, office, values })
       .then(function (response) {
+        console.log(response.data);
         if (response.data.status === 200) {
           setMsg({
             message: response.data.message,
@@ -113,20 +96,22 @@ export default function SignUp() {
               navigate("/user-signin");
             }
           });
-          console.log(msg);
         }
         if (response.data.status === "failed") {
-          setMsg((state) => {
-            return {
-              message: response.data.message,
-              errors: response.data.errors,
-            };
+          setMsg({
+            message: response.data.message,
+            error: response.data.errors,
           });
-
-          // setTimeout(() => {
-          //   setMsg("");
-          // }, 2000);
-          console.log(msg);
+        }
+        if (
+          response.data.status === "failed" &&
+          response.data.success === false
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: msg.message,
+          });
         }
       })
       .catch(function (error) {
@@ -134,21 +119,100 @@ export default function SignUp() {
       });
   }
 
+  const inputs = [
+    {
+      id: "name",
+      name: "name",
+      label: "Name",
+      helperText: typeof msg.error === "undefined" ? false : msg.error.name,
+
+      xs: 6,
+      required: true,
+    },
+    {
+      id: "email",
+      label: "Email Address",
+      name: "email",
+      pattern: "^[A-Za-z0-9]{3,16}$",
+      xs: 6,
+      type: "email",
+      helperText: typeof msg.error === "undefined" ? false : msg.error.email,
+
+      required: true,
+    },
+    {
+      id: "username",
+      label: "Username",
+      name: "username",
+      helperText: typeof msg.error === "undefined" ? false : msg.error.username,
+
+      xs: 12,
+
+      required: true,
+    },
+    {
+      id: "password",
+      label: "Password",
+      name: "password",
+
+      type: "password",
+      xs: 12,
+      helperText: typeof msg.error === "undefined" ? false : msg.error.password,
+
+      required: true,
+    },
+    {
+      name: "address",
+      label: "Address",
+      id: "address",
+      autoComplete: "adress",
+      xs: 12,
+
+      helperText: typeof msg.error === "undefined" ? false : msg.error.address,
+    },
+    {
+      name: "phone",
+      label: "Contact #",
+      id: "phone",
+      helperText: typeof msg.error === "undefined" ? false : msg.error.phone,
+
+      xs: 6,
+    },
+  ];
+
+  const officeMenuItem = [
+    {
+      id: 1,
+      value: "Provincial Engineering Office",
+      label: "Provincial Engineering Office",
+    },
+    {
+      id: 2,
+      value: "Provincial Planning Development Office",
+      label: "Provincial Planning Development Office",
+    },
+  ];
+
+  const genderMenuItem = [
+    {
+      id: 1,
+      value: "Male",
+      label: "Male",
+    },
+    {
+      id: 2,
+      value: "Female",
+      label: "Female",
+    },
+  ];
+
   const handleSubmit = (event) => {
     event.preventDefault();
     postData();
-    // console.log({
-    //   name: user.name,
-    //   email: user.email,
-    //   username: user.username,
-    //   password: user.password,
-    //   address: user.address,
-    //   phone: user.phone,
-    //   gender: gender,
-    //   office: office,
-    //   is_active: user.is_active,
-    //   msg: msg,
-    // });
+  };
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   return (
@@ -176,116 +240,44 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  // helperText={msg.message ? "" : "Name is required"}
-                  // error={true}
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  name="name"
-                  autoComplete="name"
-                  onChange={handleInput}
-                  value={user.name}
+              {inputs.map((input) => (
+                <FormInput
+                  key={input.id}
+                  {...input}
+                  value={values[input.name]}
+                  onChange={onChange}
                 />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="address"
-                  onChange={handleInput}
-                  value={user.email}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
-                  onChange={handleInput}
-                  value={user.username}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={handleInput}
-                  value={user.password}
+              ))}
+
+              <Grid item xs={12} sm={6}>
+                <FormControlSelect
+                  idLabel="genderlabel"
+                  inputLabel="Gender"
+                  labelId="genderlabel"
+                  idSelect="gender"
+                  value={gender}
+                  label="Gender"
+                  onChange={handleChangeGender}
+                  menuItem={genderMenuItem}
+                  formHelperText={
+                    typeof msg.error === "undefined" ? false : msg.error.gender
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="address"
-                  label="Address"
-                  id="address"
-                  autoComplete="new-address"
-                  onChange={handleInput}
-                  value={user.address}
+                <FormControlSelect
+                  idLabel="office-label"
+                  inputLabel="Office"
+                  labelId="office-label"
+                  idSelect="office-select"
+                  value={office}
+                  label="Office"
+                  onChange={handleChangeOffice}
+                  menuItem={officeMenuItem}
+                  formHelperText={
+                    typeof msg.error === "undefined" ? false : msg.error.office
+                  }
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="phone"
-                  label="Contact #"
-                  type="phone #"
-                  id="phone"
-                  autoComplete="new-phone"
-                  onChange={handleInput}
-                  value={user.phone}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="genderlabel">Gender</InputLabel>
-                  <Select
-                    defaultValue=""
-                    labelId="genderlabel"
-                    id="gender"
-                    value={gender}
-                    label="Gender"
-                    onChange={handleChangeGender}
-                  >
-                    <MenuItem value={"Male"}>Male</MenuItem>
-                    <MenuItem value={"Female"}>Female</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id="office-label">Office</InputLabel>
-                  <Select
-                    defaultValue=""
-                    labelId="office-label"
-                    id="office-select"
-                    value={office}
-                    label="Office"
-                    onChange={handleChangeOffice}
-                  >
-                    <MenuItem value={"Provincial Engineering Office"}>
-                      Provincial Engineering Office
-                    </MenuItem>
-                    <MenuItem value={"Provincial Planning Development Office"}>
-                      Provincial Planning Development Office
-                    </MenuItem>
-                  </Select>
-                </FormControl>
               </Grid>
             </Grid>
             <Button
