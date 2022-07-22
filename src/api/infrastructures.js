@@ -1,7 +1,8 @@
 import axios from "axios";
 
-// const url = "http://localhost:8000/api/infrastructures";
-const url = "https://nspeo.herokuapp.com/api/infrastructures";
+// const url = "http://192.168.254.117:8000/api/infrastructures";
+const url = "http://localhost:8000/api/infrastructures";
+// const url = "https://nspeo.herokuapp.com/api/infrastructures";
 
 export const fetchInfrastructures = async () => {
   try {

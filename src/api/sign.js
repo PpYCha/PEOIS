@@ -1,7 +1,8 @@
 import axios from "axios";
 
-// const url = "http://localhost:8000/api/";
-const url = "https://nspeo.herokuapp.com/api/";
+// const url = "192.168.254.117:127.0.0.1/api/";
+const url = "http://localhost:8000/api/";
+// const url = "https://nspeo.herokuapp.com/api/";
 
 export const postSignUp = async ({ gender, office, ...values }) => {
   try {

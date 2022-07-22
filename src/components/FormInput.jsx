@@ -9,7 +9,7 @@ const FormInput = (props) => {
     setFocused(true);
   };
   return (
-    <Grid item xs={props.xs}>
+    <Grid item xs={props.xs} sm={props.sm}>
       <TextField
         error={
           typeof props.helperText === "undefined" || props.helperText === false

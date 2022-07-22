@@ -181,9 +181,9 @@ const ProjectList = () => {
   useEffect(() => {
     fetchAPI();
 
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => setUsers(json));
+    // fetch("https://jsonplaceholder.typicode.com/users")
+    //   .then((response) => response.json())
+    //   .then((json) => setUsers(json));
   }, []);
 
   const fetchAPI = async () => {

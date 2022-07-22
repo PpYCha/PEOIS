@@ -25,24 +25,8 @@ import Swal from "sweetalert2";
 import FormInput from "../../components/FormInput";
 import { postSignUp } from "../../api/sign";
 import FormControlSelect from "../../components/FormControlSelect";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="">
-        REFACTOR
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Paper } from "@mui/material";
+import Copyright from "../../components/Copyright";
 
 const theme = createTheme();
 
@@ -176,7 +160,8 @@ export default function SignUp() {
       id: "phone",
       helperText: typeof msg.error === "undefined" ? false : msg.error.phone,
 
-      xs: 6,
+      xs: 12,
+      sm: 6,
     },
   ];
 
@@ -219,85 +204,96 @@ export default function SignUp() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="md">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
+        <Paper elevation={6}>
           <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            p={2}
           >
-            <Grid container spacing={2}>
-              {inputs.map((input) => (
-                <FormInput
-                  key={input.id}
-                  {...input}
-                  value={values[input.name]}
-                  onChange={onChange}
-                />
-              ))}
-
-              <Grid item xs={12} sm={6}>
-                <FormControlSelect
-                  idLabel="genderlabel"
-                  inputLabel="Gender"
-                  labelId="genderlabel"
-                  idSelect="gender"
-                  value={gender}
-                  label="Gender"
-                  onChange={handleChangeGender}
-                  menuItem={genderMenuItem}
-                  formHelperText={
-                    typeof msg.error === "undefined" ? false : msg.error.gender
-                  }
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlSelect
-                  idLabel="office-label"
-                  inputLabel="Office"
-                  labelId="office-label"
-                  idSelect="office-select"
-                  value={office}
-                  label="Office"
-                  onChange={handleChangeOffice}
-                  menuItem={officeMenuItem}
-                  formHelperText={
-                    typeof msg.error === "undefined" ? false : msg.error.office
-                  }
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
             >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link component={RouterLink} to="/user-signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+              <Grid container spacing={2}>
+                {inputs.map((input) => (
+                  <FormInput
+                    key={input.id}
+                    {...input}
+                    value={values[input.name]}
+                    onChange={onChange}
+                  />
+                ))}
+
+                <Grid item xs={12} sm={6}>
+                  <FormControlSelect
+                    idLabel="genderlabel"
+                    inputLabel="Gender"
+                    labelId="genderlabel"
+                    idSelect="gender"
+                    value={gender}
+                    label="Sex"
+                    onChange={handleChangeGender}
+                    menuItem={genderMenuItem}
+                    formHelperText={
+                      typeof msg.error === "undefined"
+                        ? false
+                        : msg.error.gender
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlSelect
+                    idLabel="office-label"
+                    inputLabel="Office"
+                    labelId="office-label"
+                    idSelect="office-select"
+                    value={office}
+                    label="Office"
+                    onChange={handleChangeOffice}
+                    menuItem={officeMenuItem}
+                    formHelperText={
+                      typeof msg.error === "undefined"
+                        ? false
+                        : msg.error.office
+                    }
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link
+                    component={RouterLink}
+                    to="/user-signin"
+                    variant="body2"
+                  >
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
+        </Paper>
+        <Copyright />
       </Container>
     </ThemeProvider>
   );
